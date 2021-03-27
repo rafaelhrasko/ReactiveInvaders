@@ -2,6 +2,6 @@
 {
     public interface ILevelSetup
     {
-        void Setup(float invaderSlotXDistance, float invaderSlotYDistance, float initialYPosition);
+        void Setup();
     }
 }

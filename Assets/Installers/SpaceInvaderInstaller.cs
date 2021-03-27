@@ -1,4 +1,6 @@
-﻿using SpaceInvaders.Game;
+﻿using SpaceInvaders.Configuration;
+using SpaceInvaders.Game;
+using SpaceInvaders.Ui;
 using SpaceInvaders.View;
 using UnityEngine;
 using Zenject;
@@ -8,11 +10,27 @@ namespace Installers
     public class SpaceInvaderInstaller: MonoInstaller
     {
         [SerializeField] private PrefabsFactory _prefabsFactory;
+        [SerializeField] private LevelProvider _levelProvider;
+        [SerializeField] private InvadersConfiguration _invadersConfiguration;
         public override void InstallBindings()
         {
+            BindGameConfigurations();
             BindGameStructure();
             BindGameRules();
             BindViewProviders();
+        }
+
+        private void BindGameConfigurations()
+        {
+            Container
+                .Bind<IPrefabsFactory>()
+                .FromInstance(_prefabsFactory);
+            Container
+                .Bind<ILevelProvider>()
+                .FromInstance(_levelProvider);
+            Container
+                .Bind<IInvaderConfigurationProvider>()
+                .FromInstance(_invadersConfiguration);
         }
 
         private void BindGameStructure()
@@ -26,15 +44,15 @@ namespace Installers
                 .Bind<IGameNotifications>()
                 .To<GameNotifications>()
                 .AsSingle();
-            
-            Container
-                .Bind<ILevelProvider>()
-                .To<MockedLevelProvider>()
-                .AsTransient();
         }
 
         private void BindGameRules()
         {
+            Container
+                .Bind<IGameFlow>()
+                .To<GameFlow>()
+                .AsTransient();
+            
             Container
                 .Bind<ILevelBehaviour>()
                 .To<ClassicLevelBehaviour>()
@@ -64,10 +82,6 @@ namespace Installers
         private void BindViewProviders()
         {
             Container
-                .Bind<IPrefabsFactory>()
-                .FromInstance(_prefabsFactory);
-            
-            Container
                 .Bind<IViewProvider<IMissileView>>()
                 .To<ViewProvider<IMissileView, MissileBehaviour>>()
                 .AsSingle();
@@ -80,6 +94,11 @@ namespace Installers
             Container
                 .Bind<IViewProvider<IExplosionView>>()
                 .To<ViewProvider<IExplosionView, ExplosionView>>()
+                .AsSingle();
+            
+            Container
+                .Bind<IUiViewProvider>()
+                .To<UiViewProvider>()
                 .AsSingle();
         }
     }

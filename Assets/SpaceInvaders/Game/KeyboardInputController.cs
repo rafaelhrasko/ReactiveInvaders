@@ -1,11 +1,15 @@
 ﻿using System;
+using UniRx;
 using UnityEngine;
 
 namespace SpaceInvaders.Game
 {
-    public class KeyboardInputController: MonoBehaviour, IInputController
+    public class KeyboardInputController : MonoBehaviour, IInputController
     {
-
+        private Action OnPlayerFired { get; set; }
+        private Action OnPlayerMovedLeft { get; set; }
+        private Action OnPlayerMovedRight { get; set; }
+        
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.Space))
@@ -15,6 +19,7 @@ namespace SpaceInvaders.Game
                     OnPlayerFired();
                 }
             }
+
             if (Input.GetKey(KeyCode.A))
             {
                 if (OnPlayerMovedLeft != null)
@@ -22,6 +27,7 @@ namespace SpaceInvaders.Game
                     OnPlayerMovedLeft();
                 }
             }
+
             if (Input.GetKey(KeyCode.S))
             {
                 if (OnPlayerMovedRight != null)
@@ -31,8 +37,28 @@ namespace SpaceInvaders.Game
             }
         }
 
-        public Action OnPlayerFired { get; set; }
-        public Action OnPlayerMovedLeft { get; set; }
-        public Action OnPlayerMovedRight { get; set; }
+        IObservable<Unit> IInputController.OnPlayerFired()
+        {
+            return Observable.FromEvent(
+                handler => OnPlayerFired += handler,
+                handler => OnPlayerFired -= handler
+            );
+        }
+
+        IObservable<Unit> IInputController.OnPlayerMovedLeft()
+        {
+            return Observable.FromEvent(
+                handler => OnPlayerMovedLeft += handler,
+                handler => OnPlayerMovedLeft -= handler
+            );
+        }
+
+        IObservable<Unit> IInputController.OnPlayerMovedRight()
+        {
+            return Observable.FromEvent(
+                handler => OnPlayerMovedRight += handler,
+                handler => OnPlayerMovedRight -= handler
+            );
+        }
     }
 }

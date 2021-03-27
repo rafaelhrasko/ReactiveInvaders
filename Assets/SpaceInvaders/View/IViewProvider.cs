@@ -6,5 +6,6 @@
         TInterface[] Initialize(int precahedCount);
         TInterface Get();
         void Return(TInterface view);
+        void ReturnAll();
     }
 }

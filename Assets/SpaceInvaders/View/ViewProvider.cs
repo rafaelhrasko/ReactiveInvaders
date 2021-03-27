@@ -33,13 +33,13 @@ namespace SpaceInvaders.View
         {
             for (int i = 0; i < _preCached.Length; i++)
             {
-                var missile = _preCached[i];
-                if (missile.IsActive())
+                var precached = _preCached[i];
+                if (precached.IsActive())
                 {
                     continue;
                 }
-                missile.Activate();
-                return missile;
+                precached.Activate();
+                return precached;
             }
 
             return GenerateNewMissileView();
@@ -48,6 +48,14 @@ namespace SpaceInvaders.View
         public void Return(TInterface view)
         {
             view.Deactivate();
+        }
+
+        public void ReturnAll()
+        {
+            for (int i = 0; i < _preCached.Length; i++)
+            {
+                Return(_preCached[i]);
+            }
         }
 
         private TInterface GenerateNewMissileView()

@@ -11,7 +11,8 @@ namespace Installers
         {
             Container
                 .Bind<IInputController>()
-                .FromInstance(_keyboardInputController);
+                .FromInstance(_keyboardInputController)
+                .AsSingle();
         }
     }
 }

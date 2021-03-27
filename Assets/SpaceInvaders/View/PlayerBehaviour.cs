@@ -1,4 +1,5 @@
 ﻿using SpaceInvaders.Game;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -15,12 +16,22 @@ namespace SpaceInvaders.View
         [SerializeField] private float _cooldownSeconds = 1;
 
         private float _nextFiring;
-        
+        private CompositeDisposable _disables = new CompositeDisposable();
         private void OnEnable()
         {
-            _inputController.OnPlayerFired += OnPlayerFired;
-            _inputController.OnPlayerMovedLeft += OnPlayerMovedLeft;
-            _inputController.OnPlayerMovedRight += OnPlayerMovedRight;
+            _disables.Add(
+            _inputController
+                .OnPlayerFired()
+                .Do(_ => OnPlayerFired())
+                .Subscribe());
+            _disables.Add(_inputController
+                .OnPlayerMovedLeft()
+                .Do(_ => OnPlayerMovedLeft())
+                .Subscribe());
+            _disables.Add(_inputController
+                .OnPlayerMovedRight()
+                .Do(_ => OnPlayerMovedRight())
+                .Subscribe());
         }
         
         public Vector3 GetCurrentPosition()
@@ -60,9 +71,7 @@ namespace SpaceInvaders.View
 
         private void OnDisable()
         {
-            _inputController.OnPlayerFired -= OnPlayerFired;
-            _inputController.OnPlayerMovedLeft -= OnPlayerMovedLeft;
-            _inputController.OnPlayerMovedRight -= OnPlayerMovedRight;
+            _disables.Dispose();
         }
 
         private void OnPlayerFired()
