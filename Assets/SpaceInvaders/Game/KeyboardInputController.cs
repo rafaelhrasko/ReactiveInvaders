@@ -15,14 +15,14 @@ namespace SpaceInvaders.Game
                     OnPlayerFired();
                 }
             }
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKey(KeyCode.A))
             {
                 if (OnPlayerMovedLeft != null)
                 {
                     OnPlayerMovedLeft();
                 }
             }
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKey(KeyCode.S))
             {
                 if (OnPlayerMovedRight != null)
                 {

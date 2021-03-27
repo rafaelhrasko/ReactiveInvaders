@@ -46,6 +46,11 @@ namespace SpaceInvaders.View
             get { return _destroyAnimation; }
         }
 
+        public Vector3 GetCurrentPosition()
+        {
+            return transform.position;
+        }
+
         public void SetInitialPosition(Vector3 position)
         {
             transform.position = position;

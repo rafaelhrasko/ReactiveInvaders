@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace SpaceInvaders.View
+﻿namespace SpaceInvaders.View
 {
-    public interface IPlayerView
+    public interface IPlayerView: IView
     {
     }
 }

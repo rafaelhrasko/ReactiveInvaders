@@ -12,11 +12,17 @@ namespace SpaceInvaders.View
         private IGameNotifications _gameNotifications;
         public int Points;
         
+        
         void Start()
         {
             _gameNotifications = _diContainer.Resolve<IGameNotifications>();
         }
-        
+
+        public Vector3 GetCurrentPosition()
+        {
+            return transform.position;
+        }
+
         public void SetInitialPosition(Vector3 position)
         {
             transform.position = position;
@@ -24,7 +30,7 @@ namespace SpaceInvaders.View
 
         public bool IsActive()
         {
-            return gameObject.activeSelf;
+            return gameObject.activeSelf && gameObject.layer == 11;
         }
 
         public void Activate()
@@ -39,7 +45,14 @@ namespace SpaceInvaders.View
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            _gameNotifications.InvaderReachedEdge();
+            if (!gameObject.activeInHierarchy)
+            {
+                return;
+            }
+            if (other.gameObject.tag == "Finish")
+            {
+                _gameNotifications.InvaderReachedEdge();
+            }
         }
 
         private void OnCollisionEnter2D(Collision2D other)

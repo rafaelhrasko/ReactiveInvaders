@@ -19,11 +19,50 @@ namespace SpaceInvaders.View
         private void OnEnable()
         {
             _inputController.OnPlayerFired += OnPlayerFired;
+            _inputController.OnPlayerMovedLeft += OnPlayerMovedLeft;
+            _inputController.OnPlayerMovedRight += OnPlayerMovedRight;
         }
         
+        public Vector3 GetCurrentPosition()
+        {
+            return transform.position;
+        }
+
+        public void SetInitialPosition(Vector3 position)
+        {
+            transform.position = position;
+        }
+
+        public bool IsActive()
+        {
+            return gameObject.activeSelf;
+        }
+
+        public void Activate()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public void Deactivate()
+        {
+            gameObject.SetActive(false);
+        }
+
+        private void OnPlayerMovedLeft()
+        {
+            transform.position += Vector3.left;
+        }
+        
+        private void OnPlayerMovedRight()
+        {
+            transform.position += Vector3.right;
+        }
+
         private void OnDisable()
         {
             _inputController.OnPlayerFired -= OnPlayerFired;
+            _inputController.OnPlayerMovedLeft -= OnPlayerMovedLeft;
+            _inputController.OnPlayerMovedRight -= OnPlayerMovedRight;
         }
 
         private void OnPlayerFired()
