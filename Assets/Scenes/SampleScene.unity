@@ -696,6 +696,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefabsFactory: {fileID: 11400000, guid: 4d7274d2f2f4ad34bb015418a57b817d, type: 2}
   _levelProvider: {fileID: 11400000, guid: 0ddd7cd78a35cf44d9f438deace9b832, type: 2}
+  _invadersConfiguration: {fileID: 11400000, guid: 3643ebeacf19aa1488fa192c52747a4b,
+    type: 2}
 --- !u!1 &1874629754
 GameObject:
   m_ObjectHideFlags: 0

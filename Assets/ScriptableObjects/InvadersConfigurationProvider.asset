@@ -12,4 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc2c3fbcc2514d4085c08bc7bad6f60f, type: 3}
   m_Name: InvadersConfigurationProvider
   m_EditorClassIdentifier: 
-  _configurations: []
+  _configurations:
+  - Slot: 1
+    Sprites:
+    - {fileID: -4820489913591291707, guid: 2d1bd96d1576c854ab386c2647f1bd95, type: 3}
+    - {fileID: -4003653216060919896, guid: 2d1bd96d1576c854ab386c2647f1bd95, type: 3}
+    Points: 10
+  - Slot: 2
+    Sprites:
+    - {fileID: -5813114471755501378, guid: 2d1bd96d1576c854ab386c2647f1bd95, type: 3}
+    - {fileID: -1450810380043699662, guid: 2d1bd96d1576c854ab386c2647f1bd95, type: 3}
+    Points: 30
+  - Slot: 3
+    Sprites:
+    - {fileID: 4221454301551859240, guid: 2d1bd96d1576c854ab386c2647f1bd95, type: 3}
+    - {fileID: 2421313087494485148, guid: 2d1bd96d1576c854ab386c2647f1bd95, type: 3}
+    Points: 50
