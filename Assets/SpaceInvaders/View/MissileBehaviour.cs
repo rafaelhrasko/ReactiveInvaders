@@ -7,8 +7,6 @@ namespace SpaceInvaders.View
 {
     public class MissileBehaviour: MonoBehaviour, IMissileView
     {
-        [SerializeField] private Animation _destroyAnimation;
-
         private Rigidbody2D _cachedRigidbody2D;
 
         [Inject] private DiContainer _diContainer;
@@ -54,11 +52,6 @@ namespace SpaceInvaders.View
                 var player = other.gameObject.GetComponent<PlayerView>();
                 _gameNotifications.MissileHitPlayer(this, player);
             } }
-
-        public Animation DestroyAnimation
-        {
-            get { return _destroyAnimation; }
-        }
 
         public Vector3 GetCurrentPosition()
         {
