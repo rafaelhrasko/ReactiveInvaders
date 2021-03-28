@@ -39,6 +39,9 @@ namespace SpaceInvaders.View
             _animator.SetInteger(ExplosionType, explosionSize);
         }
 
+        //Called by animation. Ideally animations should not be responsible for this
+        //but since Unity does not provide a reliable way to known when an animation ends,
+        //We have to leave it like this for now.
         public void Return()
         {
             _explosionViewProvider.Return(this);
