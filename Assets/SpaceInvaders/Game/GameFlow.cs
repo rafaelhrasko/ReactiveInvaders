@@ -41,7 +41,7 @@ namespace SpaceInvaders.Game
         {
             return InitializeGame()
                 .ContinueWith(
-                    _inputController.OnPlayerFired().First().ContinueWith(ExecuteRound())
+                    _inputController.OnPlayerStart().First().ContinueWith(ExecuteRound())
                     .Repeat()
                     .TakeWhile(_ => _gameStateProvider.Current.PlayerLives > 0))
                 .DoOnCompleted(() => _letterboardView.ShowText("GAME OVER"))

@@ -12,9 +12,10 @@ namespace SpaceInvaders.Game
             _missileViewProvider = missileViewProvider;
         }
         
-        public void Generate(Vector3 firingPosition, Vector3 velocity)
+        public void Generate(Vector3 firingPosition, Vector3 velocity, MissileType type)
         {
             var missile = _missileViewProvider.Get();
+            missile.SetType(type);
             missile.SetInitialPosition(firingPosition);
             missile.SetVelocity(velocity);
         }

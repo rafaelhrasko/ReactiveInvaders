@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using SpaceInvaders.View;
+using UnityEngine;
 using Zenject;
+using Random = System.Random;
 
 namespace SpaceInvaders.Game
 {
@@ -15,14 +17,18 @@ namespace SpaceInvaders.Game
         
         [Inject] private IGameNotifications _gameNotifications;
         [Inject] private IGameStateProvider _gameStateProvider;
+        [Inject] private IGenerateMissile _generateMissile;
         
         [SerializeField] private float _secondsBetweenTicks = 1.5f;
+        [SerializeField] private float _firingProbability = 0.3f;
         [SerializeField] private Vector3 _down;
         [SerializeField] private Vector3 _left;
         [SerializeField] private Vector3 _right;
         
         private GameState _currentGameState;
         private float _delayedProcessTime;
+
+        private Random r = new Random();
         
         void Start()
         {
@@ -75,6 +81,10 @@ namespace SpaceInvaders.Game
                 if (invader.IsActive())
                 {
                     invader.SwapSprite();
+                    if (r.NextDouble() < _firingProbability)
+                    {
+                        _generateMissile.Generate(invader.GetCurrentPosition(), Vector3.down*300, MissileType.Invader);
+                    }
                 }
             }
         }

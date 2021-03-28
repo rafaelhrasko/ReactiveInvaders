@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -5202829292183755649}
   m_Layer: 8
   m_Name: Missile
-  m_TagString: Untagged
+  m_TagString: Missile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,7 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ab5b644bc5841a9a93ea410cdf9e950, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _destroyAnimation: {fileID: 0}
+  _cachedRigidbody2D: {fileID: 7251622485668970011}
+  _spriteRenderer: {fileID: 5741949363873249080}
 --- !u!50 &7251622485668970011
 Rigidbody2D:
   serializedVersion: 4

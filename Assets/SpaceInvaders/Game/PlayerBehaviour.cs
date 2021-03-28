@@ -86,7 +86,7 @@ namespace SpaceInvaders.Game
         private void FireMissile()
         {
             var firingTransform = _playerView.GetFiringTransform();
-            _generateMissile.Generate(firingTransform.position, firingTransform.up*firingSpeed);
+            _generateMissile.Generate(firingTransform.position, firingTransform.up*firingSpeed, MissileType.Player);
         }
     }
 }

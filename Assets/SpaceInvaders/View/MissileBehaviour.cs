@@ -1,5 +1,4 @@
-﻿using System;
-using SpaceInvaders.Game;
+﻿using SpaceInvaders.Game;
 using UnityEngine;
 using Zenject;
 
@@ -7,9 +6,11 @@ namespace SpaceInvaders.View
 {
     public class MissileBehaviour: MonoBehaviour, IMissileView
     {
-        private Rigidbody2D _cachedRigidbody2D;
+        [SerializeField] private Rigidbody2D _cachedRigidbody2D;
+        [SerializeField] private SpriteRenderer _spriteRenderer;
 
         [Inject] private DiContainer _diContainer;
+
         private IGameNotifications _gameNotifications;
         private IViewProvider<IMissileView> _viewProvider;
 
@@ -17,14 +18,6 @@ namespace SpaceInvaders.View
         {
             _gameNotifications = _diContainer.Resolve<IGameNotifications>();
             _viewProvider = _diContainer.Resolve<IViewProvider<IMissileView>>();
-        }
-        
-        private void OnEnable()
-        {
-            if (_cachedRigidbody2D == null)
-            {
-                _cachedRigidbody2D = GetComponent<Rigidbody2D>();
-            }
         }
 
         private void OnTriggerExit2D(Collider2D other)
@@ -51,7 +44,17 @@ namespace SpaceInvaders.View
             {
                 var player = other.gameObject.GetComponent<PlayerView>();
                 _gameNotifications.MissileHitPlayer(this, player);
-            } }
+            }
+            if (tag == "Missile")
+            {
+                if (gameObject.activeInHierarchy)
+                {
+                    var missile = other.gameObject.GetComponent<MissileBehaviour>();
+                    _gameNotifications.MissileHitMissile(this, missile);
+                }
+                _viewProvider.Return(this);
+            }
+        }
 
         public Vector3 GetCurrentPosition()
         {
@@ -61,6 +64,21 @@ namespace SpaceInvaders.View
         public void SetInitialPosition(Vector3 position)
         {
             transform.position = position;
+        }
+
+        public void SetType(MissileType type)
+        {
+            switch (type)
+            {
+                case MissileType.Player:
+                    gameObject.layer = LayerMask.NameToLayer("PlayerMissile");
+                    _spriteRenderer.color = Color.blue;
+                    break;
+                case MissileType.Invader:
+                    gameObject.layer = LayerMask.NameToLayer("InvaderMissile");
+                    _spriteRenderer.color = Color.red;
+                    break;
+            }
         }
 
         public void SetVelocity(Vector3 velocity)
@@ -81,11 +99,6 @@ namespace SpaceInvaders.View
         public void Deactivate()
         {
             gameObject.SetActive(false);
-        }
-
-        public void AnimateDestroy()
-        {
-            
         }
     }
 }

@@ -6,12 +6,21 @@ namespace SpaceInvaders.Game
 {
     public class KeyboardInputController : MonoBehaviour, IInputController
     {
+        private Action OnPlayerStarted { get; set; }
         private Action OnPlayerFired { get; set; }
         private Action OnPlayerMovedLeft { get; set; }
         private Action OnPlayerMovedRight { get; set; }
         
         void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                if (OnPlayerStarted != null)
+                {
+                    OnPlayerStarted();
+                }
+            }
+            
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 if (OnPlayerFired != null)
@@ -35,6 +44,14 @@ namespace SpaceInvaders.Game
                     OnPlayerMovedRight();
                 }
             }
+        }
+
+        public IObservable<Unit> OnPlayerStart()
+        {
+            return Observable.FromEvent(
+                handler => OnPlayerStarted += handler,
+                handler => OnPlayerStarted -= handler
+            );
         }
 
         IObservable<Unit> IInputController.OnPlayerFired()

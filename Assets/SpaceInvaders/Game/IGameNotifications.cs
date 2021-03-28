@@ -11,6 +11,7 @@ namespace SpaceInvaders.Game
         Action RoundStart { get; set; }
         Action RoundEnd { get; set; }
         Action<int> ScoreChanged { get; set; }
+        Action<IMissileView, IMissileView> MissileHitMissile { get; set; }
         Action<IMissileView, InvaderBehaviour> MissileHitInvader { get; set; }
         Action<IMissileView, PlayerView> MissileHitPlayer { get; set; }
         Action<InvaderBehaviour, PlayerView> InvaderHitPlayer { get; set; }

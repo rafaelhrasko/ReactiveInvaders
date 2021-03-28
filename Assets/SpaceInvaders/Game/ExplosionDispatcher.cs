@@ -20,13 +20,21 @@ namespace SpaceInvaders.Game
             _gameNotifications.MissileHitPlayer += MissileHitPlayer;
             _gameNotifications.MissileHitInvader += MissileHitInvader;
             _gameNotifications.InvaderHitPlayer += InvaderHitPlayer;
+            _gameNotifications.MissileHitMissile += MissileHitMissile;
         }
-        
+
+        private void MissileHitMissile(IMissileView arg1, IMissileView arg2)
+        {
+            ExplodeView(arg1,1);
+            ExplodeView(arg2,1);
+        }
+
         public void Disable()
         {
             _gameNotifications.MissileHitPlayer -= MissileHitPlayer;
             _gameNotifications.MissileHitInvader -= MissileHitInvader;
             _gameNotifications.InvaderHitPlayer -= InvaderHitPlayer;
+            _gameNotifications.MissileHitMissile -= MissileHitMissile;
         }
 
         private void InvaderHitPlayer(InvaderBehaviour invader, PlayerView player)

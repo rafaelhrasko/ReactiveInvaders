@@ -17,8 +17,8 @@ namespace SpaceInvaders.Game
         void Start()
         {
             var plaeyr = _playerViewProvider.Initialize(1);
-            var missiles = _missileViewProvider.Initialize(20);
-            var explosions = _explosionViewProvider.Initialize(10);
+            var missiles = _missileViewProvider.Initialize(30);
+            var explosions = _explosionViewProvider.Initialize(30);
             var invaderViews = _invaderViewProvider.Initialize(30);
             for (int i = 0; i < invaderViews.Length; i++)
             {

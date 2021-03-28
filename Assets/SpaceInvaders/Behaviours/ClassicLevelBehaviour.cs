@@ -28,16 +28,24 @@ namespace SpaceInvaders.Game
         {
             _gameNotifications.MissileHitInvader += MissileHitInvader;
             _gameNotifications.InvaderHitPlayer += InvaderHitPlayer;
+            _gameNotifications.MissileHitPlayer += MissileHitPlayer;
             _explosionDispatcher.Initialize();
         }
-
+        
         public void Disable()
         {
             _gameNotifications.MissileHitInvader -= MissileHitInvader;
             _gameNotifications.InvaderHitPlayer -= InvaderHitPlayer;
+            _gameNotifications.MissileHitPlayer -= MissileHitPlayer;
             _explosionDispatcher.Disable();
         }
-        
+
+        private void MissileHitPlayer(IMissileView arg1, PlayerView arg2)
+        {
+            _missileViewProvider.Return(arg1);
+            _gameNotifications.PlayerDeath();
+        }
+
         private void InvaderHitPlayer(InvaderBehaviour invader, PlayerView player)
         {
             _gameNotifications.PlayerDeath();
