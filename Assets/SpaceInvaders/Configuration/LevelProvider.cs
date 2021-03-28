@@ -19,10 +19,5 @@ namespace SpaceInvaders.Configuration
                 InvaderSlotYDistance = serializable.InvaderSlotYDistance
             };
         }
-
-        public InitialLevelSlot[][] Get(int level)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

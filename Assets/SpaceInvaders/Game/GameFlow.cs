@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using SpaceInvaders.Configuration;
 using SpaceInvaders.Ui;
 using SpaceInvaders.View;
 using UniRx;
@@ -11,6 +12,7 @@ namespace SpaceInvaders.Game
     {
         private readonly IGameStateProvider _gameStateProvider;
         private readonly IGameNotifications _gameNotifications;
+        private readonly IGameModeConfigurationProvider _gameModeConfigurationProvider;
         private readonly IInputController _inputController;
         private readonly IUiViewProvider _uiViewProvider;
         private readonly ILevelSetup _levelSetup;
@@ -24,6 +26,7 @@ namespace SpaceInvaders.Game
         public GameFlow(
             IGameStateProvider gameStateProvider,
             IGameNotifications gameNotifications,
+            IGameModeConfigurationProvider gameModeConfigurationProvider,
             IInputController inputController,
             IUiViewProvider uiViewProvider,
             ILevelSetup levelSetup,
@@ -33,6 +36,7 @@ namespace SpaceInvaders.Game
         {
             _gameStateProvider = gameStateProvider;
             _gameNotifications = gameNotifications;
+            _gameModeConfigurationProvider = gameModeConfigurationProvider;
             _inputController = inputController;
             _uiViewProvider = uiViewProvider;
             _levelSetup = levelSetup;
@@ -91,10 +95,16 @@ namespace SpaceInvaders.Game
                 .Where(invadersViews => invadersViews.All(view => !view.IsActive()))
                 .First()
                 .Do(_ => _gameStateProvider.Current.CurrentLevel += 1)
-                .Do(_ => _addScore.Add(_gameStateProvider.Current.CurrentLevel*1000))
+                .Do(_ => AddLevelCompletedScore())
                 .Do(_ => _letterboardView.ShowText("Level Completed!"))
                 .Do(_ => _gameNotifications.RoundEnd())
                 .AsUnitObservable();
+        }
+
+        private void AddLevelCompletedScore()
+        {
+            var pointsPerLevel = _gameModeConfigurationProvider.Get().PointsPerLevel;
+            _addScore.Add(_gameStateProvider.Current.CurrentLevel*pointsPerLevel);
         }
 
         private IObservable<Unit> ExecuteRound()
@@ -125,7 +135,7 @@ namespace SpaceInvaders.Game
                 .Do(_ => _letterboardView.ShowText("Touch to Start"))
                 .Do(_ => _changeSceneView.Hide())
                 .Do(_ => _addScore.Add(0))
-                .Do(_ => _gameStateProvider.Current.PlayerLives = 3);
+                .Do(_ => _gameStateProvider.Current.PlayerLives = _gameModeConfigurationProvider.Get().PlayerLives);
         }
     }
 }

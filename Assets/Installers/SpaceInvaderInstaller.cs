@@ -12,6 +12,7 @@ namespace Installers
         [SerializeField] private PrefabsFactory _prefabsFactory;
         [SerializeField] private LevelProvider _levelProvider;
         [SerializeField] private InvadersConfiguration _invadersConfiguration;
+        [SerializeField] private GameModeConfigurationProvider _gameModeConfigurationProvider;
         public override void InstallBindings()
         {
             BindGameConfigurations();
@@ -31,6 +32,9 @@ namespace Installers
             Container
                 .Bind<IInvaderConfigurationProvider>()
                 .FromInstance(_invadersConfiguration);
+            Container
+                .Bind<IGameModeConfigurationProvider>()
+                .FromInstance(_gameModeConfigurationProvider);
         }
 
         private void BindGameStructure()
