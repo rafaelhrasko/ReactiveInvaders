@@ -72,7 +72,7 @@ namespace SpaceInvaders.Game
                 )
                 .First()
                 .Do(_ => _gameStateProvider.Current.PlayerLives -= 1)
-                .Do(_ => _letterboardView.ShowText("Touch to Start. Remaining lives: "+_gameStateProvider.Current.PlayerLives.ToString()));
+                .Do(_ => _letterboardView.ShowText("Remaining lives: "+_gameStateProvider.Current.PlayerLives.ToString()));
         }
 
         private IObservable<Unit> WaitAllInvadersAreDead()
@@ -85,7 +85,7 @@ namespace SpaceInvaders.Game
                 .Where(invadersViews => invadersViews.All(view => !view.IsActive()))
                 .First()
                 .Do(_ => _gameStateProvider.Current.CurrentLevel += 1)
-                .Do(_ => _letterboardView.ShowText("Level Completed! Touch to Start."))
+                .Do(_ => _letterboardView.ShowText("Level Completed!"))
                 .Do(_ => _gameNotifications.RoundEnd())
                 .AsUnitObservable();
         }
@@ -104,7 +104,9 @@ namespace SpaceInvaders.Game
                     return WaitForPlayerDeath();
                 }))
                 .First()
-                .Do(_ => _levelBehaviour.Disable());
+                .Do(_ => _levelBehaviour.Disable())
+                .Delay(TimeSpan.FromSeconds(1.5f))
+                .Do(_ => _letterboardView.ShowText("Touch to Continue."));
         }
         
         

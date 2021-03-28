@@ -37,17 +37,24 @@ namespace SpaceInvaders.View
             var tag = other.gameObject.tag;
             if (tag == "Invader")
             {
-                var invader = other.gameObject.GetComponent<InvaderBehaviour>();
-                _gameNotifications.MissileHitInvader(this, invader);
+                if (_gameNotifications.MissileHitInvader != null)
+                {
+                    var invader = other.gameObject.GetComponent<InvaderBehaviour>();
+                    _gameNotifications.MissileHitInvader(this, invader);
+                }
             }
             if (tag == "Player")
             {
-                var player = other.gameObject.GetComponent<PlayerView>();
-                _gameNotifications.MissileHitPlayer(this, player);
+                if (_gameNotifications.MissileHitPlayer != null)
+                {
+                    var player = other.gameObject.GetComponent<PlayerView>();
+                    _gameNotifications.MissileHitPlayer(this, player);
+                }
             }
             if (tag == "Missile")
             {
-                if (gameObject.activeInHierarchy)
+                if (gameObject.activeInHierarchy
+                    && _gameNotifications.MissileHitMissile != null)
                 {
                     var missile = other.gameObject.GetComponent<MissileBehaviour>();
                     _gameNotifications.MissileHitMissile(this, missile);
