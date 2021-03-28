@@ -16,7 +16,7 @@ namespace SpaceInvaders.Game
         {
             var missiles = _missileViewProvider.Initialize(20);
             var explosions = _explosionViewProvider.Initialize(10);
-            var invaderViews = _invaderViewProvider.Initialize(10);
+            var invaderViews = _invaderViewProvider.Initialize(30);
             for (int i = 0; i < invaderViews.Length; i++)
             {
                 var invaderView = invaderViews[i] as InvaderBehaviour;

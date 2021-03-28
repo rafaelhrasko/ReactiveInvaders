@@ -1,4 +1,5 @@
-﻿using SpaceInvaders.View;
+﻿using SpaceInvaders.Configuration;
+using SpaceInvaders.View;
 using UnityEngine;
 
 namespace SpaceInvaders.Game
@@ -6,6 +7,7 @@ namespace SpaceInvaders.Game
     public class LevelSetup : ILevelSetup
     {
         private readonly ILevelProvider _levelProvider;
+        private readonly IInvaderConfigurationProvider _invaderConfigurationProvider;
         private readonly IViewProvider<IInvaderView> _invaderViewProvider;
         private readonly IViewProvider<IMissileView> _missileViewProvider;
         private readonly IViewProvider<IExplosionView> _explosionsViewProvider;
@@ -13,9 +15,11 @@ namespace SpaceInvaders.Game
         public LevelSetup(IViewProvider<IInvaderView> invaderViewProvider,
             IViewProvider<IMissileView> missileViewProvider,
             IViewProvider<IExplosionView> explosionsViewProvider,
-            ILevelProvider levelProvider)
+            ILevelProvider levelProvider,
+            IInvaderConfigurationProvider invaderConfigurationProvider)
         {
             _levelProvider = levelProvider;
+            _invaderConfigurationProvider = invaderConfigurationProvider;
             _invaderViewProvider = invaderViewProvider;
             _missileViewProvider = missileViewProvider;
             _explosionsViewProvider = explosionsViewProvider;
@@ -52,7 +56,8 @@ namespace SpaceInvaders.Game
                     {
                         var invaderView = _invaderViewProvider.Get();
                         invaderView.SetInitialPosition(currentSlotPosition);
-                        invaderView.Setup(slot);
+                        var invader = _invaderConfigurationProvider.Get(slot);
+                        invaderView.Setup(invader);
                     }
                     currentSlotPosition += Vector3.right*invaderSlotXDistance;
                 }

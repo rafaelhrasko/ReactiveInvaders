@@ -10,12 +10,11 @@ namespace SpaceInvaders.View
     {
         [Inject] private DiContainer _diContainer;
 
-        [SerializeField] private Sprite _sprite;
+        [SerializeField] private SpriteRenderer _spriteRenderer;
 
         private InvaderConfiguration _invaderConfiguration;
         
         private IGameNotifications _gameNotifications;
-        private IInvaderConfigurationProvider _invaderConfigurationProvider;
 
         public int Points
         {
@@ -30,18 +29,6 @@ namespace SpaceInvaders.View
         void Start()
         {
             _gameNotifications = _diContainer.Resolve<IGameNotifications>();
-            _invaderConfigurationProvider = _diContainer.Resolve<IInvaderConfigurationProvider>();
-            _gameNotifications.InvaderMovementTick += InvaderMovementTick;
-        }
-        
-        private void OnDestroy()
-        {
-            _gameNotifications.InvaderMovementTick -= InvaderMovementTick;
-        }
-
-        private void InvaderMovementTick()
-        {
-            SwapSprite();
         }
 
         public Vector3 GetCurrentPosition()
@@ -69,9 +56,9 @@ namespace SpaceInvaders.View
             gameObject.SetActive(false);
         }
 
-        public void Setup(InitialLevelSlot slot)
+        public void Setup(InvaderConfiguration invaderConfiguration)
         {
-            _invaderConfiguration = _invaderConfigurationProvider.Get(slot);
+            _invaderConfiguration = invaderConfiguration;
             SwapSprite();
         }
 
@@ -79,7 +66,7 @@ namespace SpaceInvaders.View
         {
             var spriteIndex = _swapCount%_invaderConfiguration.Sprites.Length;
             _swapCount++;
-            _sprite = _invaderConfiguration.Sprites[spriteIndex];
+            _spriteRenderer.sprite = _invaderConfiguration.Sprites[spriteIndex];
         }
 
         private void OnTriggerExit2D(Collider2D other)
