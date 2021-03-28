@@ -11,6 +11,7 @@ namespace SpaceInvaders.Game
         [Inject] private IViewProvider<IInvaderView> _invaderViewProvider;
         [Inject] private IViewProvider<IExplosionView> _explosionViewProvider;
         [Inject] private IGameFlow _gameFlow;
+        [Inject] private IGameStateProvider _gameStateProvider;
 
         void Start()
         {
@@ -22,6 +23,8 @@ namespace SpaceInvaders.Game
                 var invaderView = invaderViews[i] as InvaderBehaviour;
                 invaderView.transform.parent = transform;
             }
+
+            _gameStateProvider.Current.InvaderViews = invaderViews;
             
             _gameFlow
                 .Execute()

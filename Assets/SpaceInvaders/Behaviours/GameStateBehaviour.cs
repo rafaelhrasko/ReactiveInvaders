@@ -14,6 +14,7 @@ namespace SpaceInvaders.Game
         }
         
         [Inject] private IGameNotifications _gameNotifications;
+        [Inject] private IGameStateProvider _gameStateProvider;
         
         [SerializeField] private float _secondsBetweenTicks = 1.5f;
         [SerializeField] private Vector3 _down;
@@ -62,9 +63,19 @@ namespace SpaceInvaders.Game
 
             _delayedProcessTime = time + _secondsBetweenTicks;
             ProcessState();
-            if (_gameNotifications.InvaderMovementTick != null)
+            SwapInvaderSprites();
+        }
+
+        private void SwapInvaderSprites()
+        {
+            var invaders = _gameStateProvider.Current.InvaderViews;
+            for (int i = 0; i < invaders.Length; i++)
             {
-                _gameNotifications.InvaderMovementTick();
+                var invader = invaders[i];
+                if (invader.IsActive())
+                {
+                    invader.SwapSprite();
+                }
             }
         }
 
