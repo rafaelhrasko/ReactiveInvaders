@@ -14,27 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levels:
   - LevelName: 4x4
-    InitialLevelSlots: 1111
+    InitialLevelSlots: '111111
+
+      111111
+
+      111111'
     InvaderSlotXDistance: 50
     InvaderSlotYDistance: 50
     InitialYPosition: 0
-  - LevelName: 4x6x8
-    InitialLevelSlots: '00111100
-
-      0111110
-
-      111111'
-    InvaderSlotXDistance: 40
-    InvaderSlotYDistance: 40
-    InitialYPosition: 400
-  - LevelName: 5x5x5x5
-    InitialLevelSlots: '11111
-
-      11111
-
-      11111
-
-      11111'
-    InvaderSlotXDistance: 40
-    InvaderSlotYDistance: 40
-    InitialYPosition: 400
