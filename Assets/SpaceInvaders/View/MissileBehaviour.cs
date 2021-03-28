@@ -13,10 +13,12 @@ namespace SpaceInvaders.View
 
         [Inject] private DiContainer _diContainer;
         private IGameNotifications _gameNotifications;
+        private IViewProvider<IMissileView> _viewProvider;
 
         private void Start()
         {
             _gameNotifications = _diContainer.Resolve<IGameNotifications>();
+            _viewProvider = _diContainer.Resolve<IViewProvider<IMissileView>>();
         }
         
         private void OnEnable()
@@ -24,6 +26,18 @@ namespace SpaceInvaders.View
             if (_cachedRigidbody2D == null)
             {
                 _cachedRigidbody2D = GetComponent<Rigidbody2D>();
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            if (!gameObject.activeInHierarchy)
+            {
+                return;
+            }
+            if (other.gameObject.tag == "Finish")
+            {
+                _viewProvider.Return(this);
             }
         }
 
