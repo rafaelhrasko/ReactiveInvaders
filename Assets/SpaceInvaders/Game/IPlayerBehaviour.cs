@@ -1,7 +1,10 @@
-﻿namespace SpaceInvaders.Game
+﻿using System;
+using UniRx;
+
+namespace SpaceInvaders.Game
 {
     public interface IPlayerBehaviour
     {
-        void Initialize();
+        IObservable<Unit> Execute();
     }
 }

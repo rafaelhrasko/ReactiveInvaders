@@ -21,7 +21,7 @@ MonoBehaviour:
       1111'
     InvaderSlotXDistance: 50
     InvaderSlotYDistance: 50
-    InitialYPosition: 400
+    InitialYPosition: 0
   - LevelName: 4x6x8
     InitialLevelSlots: '00111100
 

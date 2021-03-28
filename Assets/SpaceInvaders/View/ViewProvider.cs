@@ -68,11 +68,5 @@ namespace SpaceInvaders.View
             newMissile.Activate();
             return newMissile;
         }
-
-        public void Return(IMissileView view)
-        {
-            view.Deactivate();
-        }
-        
     }
 }

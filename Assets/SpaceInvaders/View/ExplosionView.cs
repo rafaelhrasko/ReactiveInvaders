@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
+using Zenject;
 
 namespace SpaceInvaders.View
 {
     public class ExplosionView: MonoBehaviour, IExplosionView
     {
+        [Inject] private IViewProvider<IExplosionView> _explosionViewProvider;
         [SerializeField] private Animator _animator;
         private static readonly int ExplosionType = Animator.StringToHash("ExplosionType");
 
@@ -35,6 +37,11 @@ namespace SpaceInvaders.View
         public void SetExplosion(int explosionSize)
         {
             _animator.SetInteger(ExplosionType, explosionSize);
+        }
+
+        public void Return()
+        {
+            _explosionViewProvider.Return(this);
         }
     }
 }

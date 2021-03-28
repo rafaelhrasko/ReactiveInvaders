@@ -38,12 +38,14 @@ namespace SpaceInvaders.Game
 
         public IObservable<Unit> Execute()
         {
-            return WaitForPlayerInput()
-                .ContinueWith(InitializeLevel())
-                .Do(_ => HideLeaderBoard())
-                .ContinueWith(WaitForPlayerDeath())
-                .Catch<Unit,Exception>(LogException)
-                .DoOnError( e => UnityEngine.Debug.LogError(e.ToString()));
+            return InitializeGame()
+                .ContinueWith(
+                    _inputController.OnPlayerFired().First().ContinueWith(ExecuteRound())
+                    .Repeat()
+                    .TakeWhile(_ => _gameStateProvider.Current.PlayerLives > 0))
+                .DoOnCompleted(() => _letterboardView.ShowText("GAME OVER"))
+                .Catch<Unit, Exception>(LogException)
+                .DoOnError(e => UnityEngine.Debug.LogError(e.ToString()));
         }
 
         private void HideLeaderBoard()
@@ -67,30 +69,39 @@ namespace SpaceInvaders.Game
                 handler => _gameNotifications.PlayerDeath+= handler,
                 handler => _gameNotifications.PlayerDeath-= handler
                 )
+                .First()
                 .Do(_ => _gameStateProvider.Current.PlayerLives -= 1)
-                .Do(_ => _levelSetup.Setup());
-        }
-        
-        private IObservable<Unit> InitializeLevel()
-        {
-            return Observable.Defer(() =>
-            {
-                _levelSetup.Setup();
-                _levelBehaviour.Initialize();
-                _gameNotifications.RoundStart();
-                _playerBehaviour.Initialize();
-                return Observable.ReturnUnit();
-            });
+                .Do(_ => _letterboardView.ShowText("Touch to Start. Remaining lives: "+_gameStateProvider.Current.PlayerLives.ToString()));
         }
 
-        private IObservable<Unit> WaitForPlayerInput()
+        private IObservable<Unit> WaitForPlayerStartThenExecuteRound()
+        {
+            return _inputController.OnPlayerFired()
+                .First()
+                .ContinueWith(ExecuteRound());
+        }
+
+        private IObservable<Unit> ExecuteRound()
+        {
+            return Observable.Merge(
+                _playerBehaviour.Execute().IgnoreElements(),
+                Observable.Defer(() =>
+                {
+                    HideLeaderBoard();
+                    _levelSetup.Setup();
+                    _levelBehaviour.Initialize();
+                    _gameNotifications.RoundStart();
+                    return WaitForPlayerDeath();
+                }));
+        }
+        
+        
+        private IObservable<Unit> InitializeGame()
         {
             return Observable.ReturnUnit()
                 .Do(_ => _letterboardView = _uiViewProvider.Provide<ILetterboardView>())
                 .Do(_ => _letterboardView.ShowText("Touch to Start"))
-                .Do(_ => _gameStateProvider.Current.PlayerLives = 3)
-                .ContinueWith(_inputController.OnPlayerFired())
-                .First();
+                .Do(_ => _gameStateProvider.Current.PlayerLives = 3);
         }
     }
 }
