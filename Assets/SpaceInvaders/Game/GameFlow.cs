@@ -2,9 +2,7 @@
 using System.Linq;
 using SpaceInvaders.Configuration;
 using SpaceInvaders.Ui;
-using SpaceInvaders.View;
 using UniRx;
-using UnityEngine;
 
 namespace SpaceInvaders.Game
 {
@@ -12,6 +10,7 @@ namespace SpaceInvaders.Game
     {
         private readonly IGameStateProvider _gameStateProvider;
         private readonly IGameNotifications _gameNotifications;
+        private readonly IGameModeBehaviour _gameModeBehaviour;
         private readonly IGameModeConfigurationProvider _gameModeConfigurationProvider;
         private readonly IInputController _inputController;
         private readonly IUiViewProvider _uiViewProvider;
@@ -26,6 +25,7 @@ namespace SpaceInvaders.Game
         public GameFlow(
             IGameStateProvider gameStateProvider,
             IGameNotifications gameNotifications,
+            IGameModeBehaviour gameModeBehaviour,
             IGameModeConfigurationProvider gameModeConfigurationProvider,
             IInputController inputController,
             IUiViewProvider uiViewProvider,
@@ -36,6 +36,7 @@ namespace SpaceInvaders.Game
         {
             _gameStateProvider = gameStateProvider;
             _gameNotifications = gameNotifications;
+            _gameModeBehaviour = gameModeBehaviour;
             _gameModeConfigurationProvider = gameModeConfigurationProvider;
             _inputController = inputController;
             _uiViewProvider = uiViewProvider;
@@ -87,12 +88,7 @@ namespace SpaceInvaders.Game
 
         private IObservable<Unit> WaitAllInvadersAreDead()
         {
-            return Observable.FromEvent(
-                    handler => _gameNotifications.InvaderDeath+= handler,
-                    handler => _gameNotifications.InvaderDeath-= handler
-                )
-                .Select(_ => _gameStateProvider.Current.InvaderViews)
-                .Where(invadersViews => invadersViews.All(view => !view.IsActive()))
+            return _gameModeBehaviour.Execute()
                 .First()
                 .Do(_ => _gameStateProvider.Current.CurrentLevel += 1)
                 .Do(_ => AddLevelCompletedScore())
