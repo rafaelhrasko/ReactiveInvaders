@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Invader
   - Missile
+  - Barrier
   layers:
   - Default
   - TransparentFX

@@ -51,6 +51,11 @@ namespace SpaceInvaders.View
                     _gameNotifications.MissileHitPlayer(this, player);
                 }
             }
+            if (tag == "Barrier")
+            {
+                other.gameObject.SetActive(false);
+                _viewProvider.Return(this);
+            }
             if (tag == "Missile")
             {
                 if (gameObject.activeInHierarchy
