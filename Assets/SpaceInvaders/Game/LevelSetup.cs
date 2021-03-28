@@ -8,6 +8,7 @@ namespace SpaceInvaders.Game
     {
         private readonly ILevelProvider _levelProvider;
         private readonly IInvaderConfigurationProvider _invaderConfigurationProvider;
+        private readonly IGameStateProvider _gameStateProvider;
         private readonly IViewProvider<IInvaderView> _invaderViewProvider;
         private readonly IViewProvider<IMissileView> _missileViewProvider;
         private readonly IViewProvider<IExplosionView> _explosionsViewProvider;
@@ -16,10 +17,12 @@ namespace SpaceInvaders.Game
             IViewProvider<IMissileView> missileViewProvider,
             IViewProvider<IExplosionView> explosionsViewProvider,
             ILevelProvider levelProvider,
-            IInvaderConfigurationProvider invaderConfigurationProvider)
+            IInvaderConfigurationProvider invaderConfigurationProvider,
+            IGameStateProvider gameStateProvider)
         {
             _levelProvider = levelProvider;
             _invaderConfigurationProvider = invaderConfigurationProvider;
+            _gameStateProvider = gameStateProvider;
             _invaderViewProvider = invaderViewProvider;
             _missileViewProvider = missileViewProvider;
             _explosionsViewProvider = explosionsViewProvider;
@@ -31,7 +34,7 @@ namespace SpaceInvaders.Game
             _missileViewProvider.ReturnAll();
             _explosionsViewProvider.ReturnAll();
 
-            var level = _levelProvider.GetConfiguration(0);
+            var level = _levelProvider.GetConfiguration(_gameStateProvider.Current.CurrentLevel);
             var invaderSlotXDistance = level.InvaderSlotXDistance;
             var invaderSlotYDistance = level.InvaderSlotYDistance;
             var slots = level.InitialLevelSlots;
