@@ -27,6 +27,7 @@ namespace SpaceInvaders.View
         public void Activate()
         {
             gameObject.SetActive(true);
+            transform.rotation = Quaternion.identity;
         }
 
         public void Deactivate()

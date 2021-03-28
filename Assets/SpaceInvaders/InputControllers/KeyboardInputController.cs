@@ -77,5 +77,10 @@ namespace SpaceInvaders.Game
                 handler => OnPlayerMovedRight -= handler
             );
         }
+        
+        public void Disable()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

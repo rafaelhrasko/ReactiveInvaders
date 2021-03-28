@@ -43,5 +43,10 @@ namespace SpaceInvaders.Game
             return RightButton
                 .OnPressed();
         }
+
+        public void Disable()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

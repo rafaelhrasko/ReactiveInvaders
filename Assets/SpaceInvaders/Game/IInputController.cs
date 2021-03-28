@@ -9,5 +9,6 @@ namespace SpaceInvaders.Game
         IObservable<Unit> OnPlayerFired();
         IObservable<Unit> OnPlayerMovedLeft();
         IObservable<Unit> OnPlayerMovedRight();
+        void Disable();
     }
 }
