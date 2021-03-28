@@ -14,7 +14,7 @@ namespace SpaceInvaders.Game
         private readonly IUiViewProvider _uiViewProvider;
         private readonly ILevelSetup _levelSetup;
         private readonly ILevelBehaviour _levelBehaviour;
-        private readonly IViewProvider<IPlayerView> _playerViewProvider;
+        private readonly IPlayerBehaviour _playerBehaviour;
 
         private ILetterboardView _letterboardView;
         
@@ -25,7 +25,7 @@ namespace SpaceInvaders.Game
             IUiViewProvider uiViewProvider,
             ILevelSetup levelSetup,
             ILevelBehaviour levelBehaviour,
-            IViewProvider<IPlayerView> playerViewProvider)
+            IPlayerBehaviour playerBehaviour)
         {
             _gameStateProvider = gameStateProvider;
             _gameNotifications = gameNotifications;
@@ -33,7 +33,7 @@ namespace SpaceInvaders.Game
             _uiViewProvider = uiViewProvider;
             _levelSetup = levelSetup;
             _levelBehaviour = levelBehaviour;
-            _playerViewProvider = playerViewProvider;
+            _playerBehaviour = playerBehaviour;
         }
 
         public IObservable<Unit> Execute()
@@ -78,8 +78,7 @@ namespace SpaceInvaders.Game
                 _levelSetup.Setup();
                 _levelBehaviour.Initialize();
                 _gameNotifications.RoundStart();
-                var player = _playerViewProvider.Get();
-                player.SetInitialPosition(new Vector3(0,-400,0));
+                _playerBehaviour.Initialize();
                 return Observable.ReturnUnit();
             });
         }

@@ -54,6 +54,11 @@ namespace Installers
                 .AsTransient();
             
             Container
+                .Bind<IPlayerBehaviour>()
+                .To<PlayerBehaviour>()
+                .AsTransient();
+            
+            Container
                 .Bind<ILevelBehaviour>()
                 .To<ClassicLevelBehaviour>()
                 .AsTransient();

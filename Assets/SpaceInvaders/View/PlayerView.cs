@@ -10,8 +10,10 @@ namespace SpaceInvaders.View
 
         [SerializeField] private Transform _firingTransform;
 
-        [SerializeField] private float _firingSpeed = 3;
-        [SerializeField] private float _cooldownSeconds = 1;
+        public Transform GetFiringTransform()
+        {
+            return _firingTransform;
+        }
         
         public Vector3 GetCurrentPosition()
         {
@@ -46,18 +48,6 @@ namespace SpaceInvaders.View
         public void MoveRight()
         {
             transform.position += Vector3.right;
-        }
-
-        public void FireMissile(float firingSpeed)
-        {
-            _generateMissile.Generate(_firingTransform.position, _firingTransform.up*firingSpeed);
-            /*var currentTime = Time.time;
-            if (_nextFiring > currentTime)
-            {
-                return;
-            }
-            
-            _nextFiring = currentTime + _cooldownSeconds;*/
         }
     }
 }
