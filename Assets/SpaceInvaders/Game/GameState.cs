@@ -6,6 +6,7 @@ namespace SpaceInvaders
     {
         public int Score;
         public int PlayerLives;
+        public int CurrentLevel;
         public IInvaderView[] InvaderViews;
     }
 }

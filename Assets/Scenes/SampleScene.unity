@@ -326,7 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c790f4de0f47a79df9741bb9cf4ce7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _secondsBetweenTicks: 0
+  _secondsBetweenTicks: 1.2
   _down: {x: 0, y: -30, z: 0}
   _left: {x: -10, y: 0, z: 0}
   _right: {x: 10, y: 0, z: 0}

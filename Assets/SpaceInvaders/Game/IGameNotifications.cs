@@ -7,7 +7,9 @@ namespace SpaceInvaders.Game
     {
         Action InvaderReachedEdge { get; set; }
         Action PlayerDeath { get; set; }
+        Action InvaderDeath { get; set; }
         Action RoundStart { get; set; }
+        Action RoundEnd { get; set; }
         Action<int> ScoreChanged { get; set; }
         Action<IMissileView, InvaderBehaviour> MissileHitInvader { get; set; }
         Action<IMissileView, PlayerView> MissileHitPlayer { get; set; }

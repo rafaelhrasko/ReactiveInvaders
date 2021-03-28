@@ -48,12 +48,24 @@ namespace SpaceInvaders.Game
                 .Do(_ => InitializeView());
         }
         
-        private IObservable<Unit> WaitForRoundEnd()
+        private IObservable<Unit> DeathOrRoundEnd()
+        {
+            return Observable.Merge(
+                    ObservePlayerDeath(),
+                    ObserveRoundEnd())
+                .First();
+        }
+
+        private IObservable<Unit> ObservePlayerDeath()
         {
             return Observable.FromEvent(handler => _gameNotifications.PlayerDeath += handler,
-                handler => _gameNotifications.PlayerDeath -= handler)
-                .Do(_ => _viewProvider.Return(_playerView))
-                .First();
+                handler => _gameNotifications.PlayerDeath -= handler);
+        }
+        
+        private IObservable<Unit> ObserveRoundEnd()
+        {
+            return Observable.FromEvent(handler => _gameNotifications.RoundEnd += handler,
+                handler => _gameNotifications.RoundEnd -= handler);
         }
 
         public IObservable<Unit> Execute()
@@ -67,7 +79,8 @@ namespace SpaceInvaders.Game
                     _inputController.OnPlayerMovedLeft().Do(_ => _playerView.MoveLeft()),
                     _inputController.OnPlayerMovedRight().Do(_ => _playerView.MoveRight())
                 ))
-                .TakeUntil(WaitForRoundEnd());
+                .TakeUntil(DeathOrRoundEnd())
+                .DoOnCompleted(() => _viewProvider.Return(_playerView));
         }
 
         private void FireMissile()

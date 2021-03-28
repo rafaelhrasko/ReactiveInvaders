@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using SpaceInvaders.Ui;
 using SpaceInvaders.View;
 using UniRx;
@@ -74,16 +75,25 @@ namespace SpaceInvaders.Game
                 .Do(_ => _letterboardView.ShowText("Touch to Start. Remaining lives: "+_gameStateProvider.Current.PlayerLives.ToString()));
         }
 
-        private IObservable<Unit> WaitForPlayerStartThenExecuteRound()
+        private IObservable<Unit> WaitAllInvadersAreDead()
         {
-            return _inputController.OnPlayerFired()
+            return Observable.FromEvent(
+                    handler => _gameNotifications.InvaderDeath+= handler,
+                    handler => _gameNotifications.InvaderDeath-= handler
+                )
+                .Select(_ => _gameStateProvider.Current.InvaderViews)
+                .Where(invadersViews => invadersViews.All(view => !view.IsActive()))
                 .First()
-                .ContinueWith(ExecuteRound());
+                .Do(_ => _gameStateProvider.Current.CurrentLevel += 1)
+                .Do(_ => _letterboardView.ShowText("Level Completed! Touch to Start."))
+                .Do(_ => _gameNotifications.RoundEnd())
+                .AsUnitObservable();
         }
 
         private IObservable<Unit> ExecuteRound()
         {
             return Observable.Merge(
+                WaitAllInvadersAreDead(),
                 _playerBehaviour.Execute().IgnoreElements(),
                 Observable.Defer(() =>
                 {
@@ -92,7 +102,9 @@ namespace SpaceInvaders.Game
                     _levelBehaviour.Initialize();
                     _gameNotifications.RoundStart();
                     return WaitForPlayerDeath();
-                }));
+                }))
+                .First()
+                .Do(_ => _levelBehaviour.Disable());
         }
         
         

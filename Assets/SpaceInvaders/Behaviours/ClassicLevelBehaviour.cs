@@ -48,6 +48,10 @@ namespace SpaceInvaders.Game
             _addScore.Add(invader.Points);
             _missileViewProvider.Return(missile);
             _invaderViewProvider.Return(invader);
+            if (_gameNotifications.InvaderDeath != null)
+            {
+                _gameNotifications.InvaderDeath();
+            }
         }
         
     }
