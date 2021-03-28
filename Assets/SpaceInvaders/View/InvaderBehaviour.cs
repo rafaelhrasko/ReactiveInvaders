@@ -85,7 +85,7 @@ namespace SpaceInvaders.View
         {
             if (other.gameObject.tag == "Player")
             {
-                _gameNotifications.InvaderHitPlayer(this, other.gameObject.GetComponent<PlayerBehaviour>());
+                _gameNotifications.InvaderHitPlayer(this, other.gameObject.GetComponent<PlayerView>());
             }
         }
     }

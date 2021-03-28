@@ -10,7 +10,7 @@ namespace SpaceInvaders.Game
         Action RoundStart { get; set; }
         Action<int> ScoreChanged { get; set; }
         Action<IMissileView, InvaderBehaviour> MissileHitInvader { get; set; }
-        Action<IMissileView, PlayerBehaviour> MissileHitPlayer { get; set; }
-        Action<InvaderBehaviour, PlayerBehaviour> InvaderHitPlayer { get; set; }
+        Action<IMissileView, PlayerView> MissileHitPlayer { get; set; }
+        Action<InvaderBehaviour, PlayerView> InvaderHitPlayer { get; set; }
     }
 }

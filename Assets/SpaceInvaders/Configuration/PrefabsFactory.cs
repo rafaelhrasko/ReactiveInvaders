@@ -10,6 +10,7 @@ namespace SpaceInvaders.Configuration
         [SerializeField] private MissileBehaviour _missilePrefab;
         [SerializeField] private InvaderBehaviour _invaderPrefab;
         [SerializeField] private ExplosionView _explosionPrefab;
+        [SerializeField] private PlayerView _playerPrefab;
         
         public TBehaviour Instantiate<TBehaviour>() where TBehaviour : MonoBehaviour
         {
@@ -25,6 +26,10 @@ namespace SpaceInvaders.Configuration
             if (type.DerivesFrom(typeof(IExplosionView)))
             {
                 return Instantiate(_explosionPrefab).GetComponent<TBehaviour>();
+            }
+            if (type.DerivesFrom(typeof(IPlayerView)))
+            {
+                return Instantiate(_playerPrefab).GetComponent<TBehaviour>();
             }
             
             UnityEngine.Debug.LogError("[PrefabsFactory] Unknown TBehaviour. Fullname=" + type.FullName);

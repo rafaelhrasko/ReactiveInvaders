@@ -18,3 +18,5 @@ MonoBehaviour:
     type: 3}
   _explosionPrefab: {fileID: 5504357264567449851, guid: 65b99f46c82f7c84897d7cd3ee37f2a8,
     type: 3}
+  _playerPrefab: {fileID: 4659816823476349481, guid: 95363f04a5954d544adbedb1f7cd28e6,
+    type: 3}

@@ -37,7 +37,7 @@ namespace SpaceInvaders.View
             }
             if (tag == "Player")
             {
-                var player = other.gameObject.GetComponent<PlayerBehaviour>();
+                var player = other.gameObject.GetComponent<PlayerView>();
                 _gameNotifications.MissileHitPlayer(this, player);
             } }
 

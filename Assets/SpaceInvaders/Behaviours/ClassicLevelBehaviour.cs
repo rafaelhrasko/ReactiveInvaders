@@ -38,7 +38,7 @@ namespace SpaceInvaders.Game
             _explosionDispatcher.Disable();
         }
         
-        private void InvaderHitPlayer(InvaderBehaviour invader, PlayerBehaviour player)
+        private void InvaderHitPlayer(InvaderBehaviour invader, PlayerView player)
         {
             _gameNotifications.PlayerDeath();
         }

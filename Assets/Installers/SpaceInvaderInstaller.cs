@@ -82,6 +82,11 @@ namespace Installers
         private void BindViewProviders()
         {
             Container
+                .Bind<IViewProvider<IPlayerView>>()
+                .To<ViewProvider<IPlayerView, PlayerView>>()
+                .AsSingle();
+
+            Container
                 .Bind<IViewProvider<IMissileView>>()
                 .To<ViewProvider<IMissileView, MissileBehaviour>>()
                 .AsSingle();

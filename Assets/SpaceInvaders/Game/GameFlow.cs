@@ -1,6 +1,8 @@
 ﻿using System;
 using SpaceInvaders.Ui;
+using SpaceInvaders.View;
 using UniRx;
+using UnityEngine;
 
 namespace SpaceInvaders.Game
 {
@@ -12,6 +14,7 @@ namespace SpaceInvaders.Game
         private readonly IUiViewProvider _uiViewProvider;
         private readonly ILevelSetup _levelSetup;
         private readonly ILevelBehaviour _levelBehaviour;
+        private readonly IViewProvider<IPlayerView> _playerViewProvider;
 
         private ILetterboardView _letterboardView;
         
@@ -21,7 +24,8 @@ namespace SpaceInvaders.Game
             IInputController inputController,
             IUiViewProvider uiViewProvider,
             ILevelSetup levelSetup,
-            ILevelBehaviour levelBehaviour)
+            ILevelBehaviour levelBehaviour,
+            IViewProvider<IPlayerView> playerViewProvider)
         {
             _gameStateProvider = gameStateProvider;
             _gameNotifications = gameNotifications;
@@ -29,6 +33,7 @@ namespace SpaceInvaders.Game
             _uiViewProvider = uiViewProvider;
             _levelSetup = levelSetup;
             _levelBehaviour = levelBehaviour;
+            _playerViewProvider = playerViewProvider;
         }
 
         public IObservable<Unit> Execute()
@@ -73,6 +78,8 @@ namespace SpaceInvaders.Game
                 _levelSetup.Setup();
                 _levelBehaviour.Initialize();
                 _gameNotifications.RoundStart();
+                var player = _playerViewProvider.Get();
+                player.SetInitialPosition(new Vector3(0,-400,0));
                 return Observable.ReturnUnit();
             });
         }

@@ -29,7 +29,7 @@ namespace SpaceInvaders.Game
             _gameNotifications.InvaderHitPlayer -= InvaderHitPlayer;
         }
 
-        private void InvaderHitPlayer(InvaderBehaviour invader, PlayerBehaviour player)
+        private void InvaderHitPlayer(InvaderBehaviour invader, PlayerView player)
         {
             ExplodeView(invader,3);
             ExplodeView(player,3);
@@ -41,7 +41,7 @@ namespace SpaceInvaders.Game
             ExplodeView(invader,2);
         }
 
-        private void MissileHitPlayer(IMissileView missile, PlayerBehaviour player)
+        private void MissileHitPlayer(IMissileView missile, PlayerView player)
         {
             ExplodeView(missile,1);
             ExplodeView(player,3);
